@@ -1,0 +1,30 @@
+name = "Erdos1017"
+defaultTargets = ["Graphon", "Erdos1017", "Challenge", "Solution"]
+
+# No silently-introduced implicit binders anywhere in the corpus.
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.35.0-rc4"
+
+# Import closure of `Graphon.Compactness` from cameronfreer/graphon, under its
+# upstream module names.
+[[lean_lib]]
+name = "Graphon"
+srcDir = "vendor/Graphon"
+globs = ["Graphon.+"]
+
+[[lean_lib]]
+name = "Erdos1017"
+globs = ["Erdos1017.+"]
+
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]

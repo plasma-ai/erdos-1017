@@ -1,0 +1,6 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": ["Erdos1017.uniform_asymptotic"],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"]
+}

@@ -1,0 +1,305 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Erdős Problem 1017: clique partitions of graphs of given size"
+  description: >-
+    A Lean proof that f(n, k), the least number such that the edges of every
+    graph with n vertices and k edges can be partitioned into at most f(n, k)
+    cliques, satisfies f(n, k) = n² B(k/n²) + o(n²) uniformly in 0 ≤ k ≤
+    n(n − 1)/2, for an explicit continuous piecewise-algebraic function B on
+    [0, 1/2]. B(d) = d for d ≤ 1/4; above 1/4 it is the larger of two curves
+    built from explicit dual certificates on split, mixed and two-head graphs.
+    This provides an asymptotic resolution of Erdős Problem 1017, as posed by
+    Erdős and as stated by Bloom, who asks for an estimate of f(n, k) for
+    k > n²/4. The formula is new to our knowledge. The proof passes through
+    the fractional relaxation and proves again, in Lean, the case of the
+    fractional-to-integral transfer of Balogh, He, Krueger, Nguyen and Wigal
+    that it needs.
+  authors:
+    - "Ryan Pettry"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Ryan Pettry"
+    - "Jacob Parish"
+    - "Andrew Turner"
+
+classification:
+  arxiv: ["math.CO"]
+  msc2020: ["05C35", "05C70"]
+
+sources:
+  - title: "Erdős Problem #1017"
+    authors: ["Thomas F. Bloom"]
+    id: "https://www.erdosproblems.com/1017"
+    relationship: "background"
+    note: >-
+      Accessed 2026-11-03, when the entry and its discussion thread recorded
+      no proof claims. Bloom's catalog entry supplies the problem number and
+      statement.
+  - title: "Formal Conjectures: ErdosProblems/1017.lean"
+    authors: ["The Formal Conjectures Authors"]
+    id: "https://github.com/google-deepmind/formal-conjectures/blob/7bdc4a42f24c0316f81c73b26121794b2bed96a3/FormalConjectures/ErdosProblems/1017.lean"
+    relationship: "background"
+    note: >-
+      At commit 7bdc4a42f24c0316f81c73b26121794b2bed96a3. The definition of f
+      in Challenge.lean is copied verbatim, and so is that of
+      SimpleGraph.IsCliqueEdgePartition, from
+      FormalConjecturesForMathlib/Combinatorics/SimpleGraph/Chordal.lean at
+      the same commit. The proof development repeats both with their proved
+      API. erdos_1017.lower_bound and erdos_1017.upper_bound ask for
+      natural-number lower and upper bounds on f(n, k) for k > n²/4; this
+      asymptotic result over all k does not supply them.
+  - title: "Some unsolved problems in graph theory and combinatorial analysis"
+    authors: ["P. Erdős"]
+    id: "Combinatorial Mathematics and its Applications (Proc. Conf., Oxford, 1969), Academic Press, London (1971), 97–109"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Source of the question, in item 11 on p. 101: whether the
+      Erdős–Goodman–Pósa bound can be sharpened for k > n²/4.
+  - title: "The representation of a graph by set intersections"
+    authors: ["P. Erdős", "A. W. Goodman", "L. Pósa"]
+    id: "https://doi.org/10.4153/CJM-1966-014-3"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Proves f(n, k) ≤ floor(n²/4), with edges and triangles only; the
+      complete balanced bipartite graph attains it.
+  - title: "On the number of edge-disjoint triangles in graphs of given size"
+    authors: ["E. Győri"]
+    id: "Combinatorics (Eger, 1987), Colloq. Math. Soc. János Bolyai 52, North-Holland (1988), 267–276"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Bounds the number of edge-disjoint triangles in graphs with
+      floor(n²/4) + m edges. With the 1991 paper below and the lower-bound
+      graphs of Győri and Keszegh (a triangle-free graph inside one side of
+      the complete balanced bipartite graph), this determines
+      f(n, k) = floor(n²/4) − m for m at most a linear function of n, and
+      gives floor(n²/4) − m + O(m²/n²) for m = o(n²).
+  - title: "On the number of edge disjoint cliques in graphs of given size"
+    authors: ["E. Győri"]
+    id: "https://doi.org/10.1007/BF01205075"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Extends the 1988 bounds from triangles to edge-disjoint cliques of
+      every fixed order.
+  - title: "Edge disjoint cliques in graphs"
+    authors: ["E. Győri"]
+    id: "Sets, Graphs and Numbers (Budapest, 1991), Colloq. Math. Soc. János Bolyai 60, North-Holland (1992), 357–363"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Corrects the 1991 paper above.
+  - title: "On covering of graphs"
+    authors: ["L. Lovász"]
+    id: "Theory of Graphs (Proc. Colloq., Tihany, 1966), Academic Press (1968), 231–236"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Treats the covering version, in which the cliques need not be
+      edge-disjoint.
+  - title: "On the number of edge-disjoint triangles in K₄-free graphs"
+    authors: ["E. Győri", "B. Keszegh"]
+    id: "https://doi.org/10.1007/s00493-016-3500-0"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Every K₄-free graph with floor(n²/4) + m edges has m edge-disjoint
+      triangles. This is sharp for m up to about n²/16: a triangle-free graph
+      with m edges inside one side of the complete balanced bipartite graph
+      attains it, which settles the K₄-free case in that range.
+  - title: "Decomposing graphs into edges and triangles"
+    authors: ["D. Král'", "B. Lidický", "T. L. Martins", "Y. Pehova"]
+    id: "https://doi.org/10.1017/S0963548318000421"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Its bound on decompositions into edges and triangles implies
+      f(n, k) ≤ n²/4 − m/3 + o(n²) for k = floor(n²/4) + m.
+  - title: "Sharp bounds for decomposing graphs into edges and triangles"
+    authors: ["A. Blumenthal", "B. Lidický", "Y. Pehova", "F. Pfender", "O. Pikhurko", "J. Volec"]
+    id: "https://doi.org/10.1017/S0963548320000358"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Sharpens the previous decomposition bound, which gives
+      f(n, k) ≤ (n² − k + 2)/3 for large n. With the theorem, it gives
+      B(d) ≤ (1 − d)/3, and numerical evaluation indicates that the
+      inequality is strict for 1/4 < d ≤ 1/2; neither comparison is checked
+      in Lean.
+  - title: "Packing edge disjoint cliques in graphs"
+    authors: ["J. Balogh", "M. C. Wigal"]
+    id: "https://doi.org/10.1007/s00493-025-00184-w"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Proves Győri's conjecture that, for each fixed r ≥ 3, every n-vertex
+      graph with ℓ edges more than the Turán graph T_{r−1}(n) has
+      (2 − o(1))ℓ/r edge-disjoint r-cliques as n → ∞. The case r = 3 is the
+      Král'–Lidický–Martins–Pehova result, proved again by a different
+      method, so it gives the same bound f(n, k) ≤ n²/4 − m/3 + o(n²).
+  - title: "Clique covers and decompositions of cliques of graphs"
+    authors: ["J. Balogh", "J. He", "R. A. Krueger", "T. Nguyen", "M. C. Wigal"]
+    id: "https://doi.org/10.19086/aic.2026.9"
+    type: "paper"
+    relationship: "formalizes"
+    note: >-
+      Advances in Combinatorics 2026:9. The case of Theorem 1.10 used here,
+      cp(G) ≤ cp*(G) + o(n²) uniformly over graphs on n vertices, is proved
+      in Lean by regularity cleaning, truncation of large cliques, random
+      allocation and a hypergraph nibble; the published theorem is not
+      assumed.
+  - title: "Clique decompositions and covers for large graphs"
+    authors: ["W. Zhang"]
+    id: "arXiv:2608.25233"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Concurrent work that also uses linear-programming duality for clique
+      decompositions.
+  - title: "Erdős Problem #1017"
+    id: "https://www.erdosproblemaday.com/report/1017"
+    relationship: "other"
+    note: >-
+      An AI-generated working report on Erdős Problem a Day, not
+      independently verified, that does not solve the problem. It computes
+      f(n, k) exactly for n ≤ 7 by exhaustive search and leaves the behavior
+      at positive excess density open.
+  - title: "graphon"
+    authors: ["Cameron Freer"]
+    id: "https://github.com/cameronfreer/graphon"
+    relationship: "adapts"
+    note: >-
+      The import closure of Graphon.Compactness, 11 modules, is vendored under
+      vendor/Graphon from commit 9f7be59fa754d260a544b4cfd83d6a5b94f7552e and
+      ported to this toolchain. The port leaves the mathematical statements
+      unchanged: it removes the blueprint annotations, converts the files to
+      the module system, adapts proofs to renamed Mathlib lemmas, and makes
+      the definition energyRect and the lemma
+      exists_cutNormDiff_limit_of_summable public. The compactness of the
+      decorated limit models is proved from it.
+  - title: "Uniform asymptotics of clique partition numbers"
+    authors: ["Plasma AI"]
+    id: "https://github.com/plasma-ai/erdos-1017/blob/main/blueprint/proof.md"
+    type: "original-proof"
+    relationship: "other"
+    note: >-
+      A prose account of the proof in blueprint/, not refereed. It follows
+      the Lean development module by module, proving some steps and cases in
+      full and summarizing the others.
+  - title: "An asymptotic formula for clique partitions above the Turán threshold"
+    authors: ["Plasma AI"]
+    id: "https://github.com/plasma-ai/erdos-1017/blob/main/paper/erdos-1017.pdf"
+    type: "paper"
+    relationship: "other"
+    note: >-
+      The companion paper in paper/, not refereed. It proves the shorter
+      parts and one exclusion in full and summarizes the rest, which Lean
+      proves.
+
+status:
+  scope: >-
+    Comparator checks one theorem, with no hypotheses beyond its statement:
+    Erdos1017.uniform_asymptotic, that for every η > 0 there is N with
+    |f(n, k)/n² − B(k/n²)| < η for all n ≥ N and all k ≤ n(n − 1)/2. It gives
+    no rate of convergence, no exact value of f(n, k), no description of the
+    extremal graphs, and no relative estimate as k/n² approaches 1/2, where B
+    tends to 0. formal-conjectures' erdos_1017.lower_bound and
+    erdos_1017.upper_bound, which ask for natural-number lower and upper
+    bounds for k > n²/4, are not addressed.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["gpt-6.1-sol", "gpt-6-astra"]
+      framework: "Codex"
+      tool_setup: >-
+        Research runs with shell access. They read the problem's sources
+        and papers fetched from the web, and ran Python checks of linear
+        programs and exact rational certificates, without Lean.
+      prompting_notes: >-
+        The research asked for an answer to Erdős Problem 1017. GPT-6.1 Sol
+        and GPT-6 Astra in Codex contributed to it, alongside Claude Opus 5.5
+        in Claude Code.
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        Research sessions with shell access in the same research workspace
+        as the Codex runs.
+      prompting_notes: >-
+        Claude Opus 5.5 in Claude Code contributed to the same research,
+        alongside GPT-6.1 Sol and GPT-6 Astra in Codex.
+    - method: "agent"
+      models: ["gpt-6.1-sol", "gpt-6-astra"]
+      framework: "Codex"
+      tool_setup: "Lean 4.35.0-rc4, Mathlib, Lake, and Python."
+      prompting_notes: >-
+        Asked to prove the problem's statement in Lean as one uniform theorem
+        with no hypotheses. GPT-6.1 Sol and GPT-6 Astra in Codex contributed
+        to the formalization under human direction, alongside Claude Opus 5.5
+        in Claude Code.
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: "Lean 4.35.0-rc4, Mathlib, Lake, and Python."
+      prompting_notes: >-
+        Claude Opus 5.5 in Claude Code contributed to the formalization under
+        human direction, alongside GPT-6.1 Sol and GPT-6 Astra in Codex.
+  notes: >-
+    GPT-6.1 Sol and GPT-6 Astra in Codex and Claude Opus 5.5 in Claude Code
+    found the proof: the benchmark B with its split, mixed and two-head
+    families and their dual certificates, and the argument for the upper
+    bound, namely limit models at a positive maximum of F − B, their
+    structure, and a case analysis of the possible locations of the maximum.
+    The same models produced the Lean formalization in Codex and Claude Code
+    under human direction.
+
+fidelity:
+  divergences: >-
+    Erdős asked whether the Erdős–Goodman–Pósa bound can be sharpened for
+    k > n²/4, and Bloom's catalog asks for an estimate of f(n, k) there. The
+    compared theorem makes this precise as a uniform additive asymptotic,
+    f(n, k) = n² B(k/n²) + o(n²) over all 0 ≤ k ≤ n(n − 1)/2, with densities
+    normalized by n² rather than by n(n − 1)/2. f is formal-conjectures'
+    definition: the least m such that every graph on Fin n with exactly k
+    edges has a partition of its edges into at most m cliques with at least
+    two vertices each. For k ≤ n(n − 1)/2 this is the largest clique partition
+    number among such graphs; for larger k it is 0, and the theorem does not
+    use those values. In Challenge.lean the roots σ_d and z_c and the inverses
+    of the mixed and two-head families are defined as infima of their exact
+    algebraic solution sets in the stated intervals; the development proves
+    that these are the unique roots and inverses and that B is continuous on
+    [0, 1/2]. The blueprint follows the route of the Lean proof.
+
+review:
+  status: "self-assessed"
+  reviewers: []
+  notes: >-
+    The human project lead checked the statement in Challenge.lean against
+    the problem and confirmed that it formalizes the claimed result. The full
+    development, including the vendored graphon library, builds on Lean
+    v4.35.0-rc4, and the compared theorem depends only on propext,
+    Classical.choice, and Quot.sound. Comparator has not yet been run on this
+    commit. Plasma AI has reviewed the proof internally.
+
+alignment:
+  namespace: "Erdos1017"
+  statements:
+    - source: "Erdős Problem 1017, as a uniform asymptotic formula"
+      lean: "Erdos1017.uniform_asymptotic"
+      module: "Solution"
+      status: "proved"
+      note: >-
+        For every ε > 0 there is N such that
+        |f n k / n² − benchmark (k / n²)| < ε for all n ≥ N and all
+        k ≤ n.choose 2, where f is formal-conjectures' f and benchmark is the
+        function B defined in Challenge.lean.
+
+acknowledgements: "Mathlib, formal-conjectures, Cameron Freer's graphon, the Palomar template, and the authors of the cited mathematical sources."
