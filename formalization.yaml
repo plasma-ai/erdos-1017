@@ -160,12 +160,12 @@ sources:
     note: >-
       Concurrent work that also uses linear-programming duality for clique
       decompositions.
-  - title: "Erdős Problem #1017"
+  - title: "Erdős problem #1017: verified partial results"
     id: "https://www.erdosproblemaday.com/report/1017"
     relationship: "other"
     note: >-
-      An AI-generated working report on Erdős Problem a Day, not
-      independently verified, that does not solve the problem. It computes
+      An AI-generated working report on Erdős Problem a Day, dated 2026-07-29,
+      not independently verified, that does not solve the problem. It computes
       f(n, k) exactly for n ≤ 7 by exhaustive search and leaves the behavior
       at positive excess density open.
   - title: "graphon"
@@ -187,18 +187,18 @@ sources:
     type: "original-proof"
     relationship: "other"
     note: >-
-      A prose account of the proof in blueprint/, not refereed. It follows
-      the Lean development module by module, proving some steps and cases in
-      full and summarizing the others.
+      The prose account accompanying this repository, in blueprint/; not
+      refereed. It follows the Lean development module by module, proving
+      some steps and cases in full and summarizing the others.
   - title: "An asymptotic formula for clique partitions above the Turán threshold"
     authors: ["Plasma AI"]
-    id: "https://github.com/plasma-ai/erdos-1017/blob/main/paper/erdos-1017.pdf"
+    id: "https://github.com/plasma-ai/erdos-1017/blob/main/paper/clique_partitions.pdf"
     type: "paper"
     relationship: "other"
     note: >-
-      The companion paper in paper/, not refereed. It proves the shorter
-      parts and one exclusion in full and summarizes the rest, which Lean
-      proves.
+      The companion paper accompanying this repository, in paper/; not
+      refereed. It proves the shorter parts and one exclusion in full and
+      summarizes the rest, which Lean proves.
 
 status:
   scope: >-
@@ -282,12 +282,17 @@ review:
   status: "self-assessed"
   reviewers: []
   notes: >-
-    The human project lead checked the statement in Challenge.lean against
-    the problem and confirmed that it formalizes the claimed result. The full
+    The human project lead checked the statement in Challenge.lean against the
+    problem and confirmed that it formalizes the claimed result. The full
     development, including the vendored graphon library, builds on Lean
     v4.35.0-rc4, and the compared theorem depends only on propext,
-    Classical.choice, and Quot.sound. Comparator has not yet been run on this
-    commit. Plasma AI has reviewed the proof internally.
+    Classical.choice, and Quot.sound. Comparator, from the toolchain's lake
+    comparator, accepts it at commit cba465c7c5ffca9a5c881e23c54ab4dbb43a5bab
+    against Challenge.lean with the Lean, NanoDa and con-ron kernels. It ran
+    in its bwrap sandbox on Linux, under Docker Desktop on an Apple silicon
+    Mac, with Docker's /proc masking relaxed (--unmask-proc) so that bwrap
+    could mount /proc. Plasma AI has reviewed the proof internally. No
+    independent review of the formalization has been recorded.
 
 alignment:
   namespace: "Erdos1017"
@@ -302,4 +307,4 @@ alignment:
         k ≤ n.choose 2, where f is formal-conjectures' f and benchmark is the
         function B defined in Challenge.lean.
 
-acknowledgements: "Mathlib, formal-conjectures, Cameron Freer's graphon, the Palomar template, and the authors of the cited mathematical sources."
+acknowledgements: "Mathlib, formal-conjectures, Cameron Freer's graphon, and the authors of the cited mathematical sources."

@@ -126,7 +126,7 @@ an atom of a plateau or a saturated pair (§10).
 
 ---
 
-## 1. The statement and the final assembly
+## 1. The challenge and the final assembly
 
 `Challenge.lean`, `Erdos1017/FinalAssembly.lean`, `Erdos1017/FullBenchmarkUpper.lean`, `Solution.lean`, `Erdos1017/Statement.lean`, `Erdos1017/Target.lean`.
 
