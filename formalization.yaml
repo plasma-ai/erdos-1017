@@ -145,7 +145,7 @@ sources:
     authors: ["J. Balogh", "J. He", "R. A. Krueger", "T. Nguyen", "M. C. Wigal"]
     id: "https://doi.org/10.19086/aic.2026.9"
     type: "paper"
-    relationship: "formalizes"
+    relationship: "other"
     note: >-
       Advances in Combinatorics 2026:9. The case of Theorem 1.10 used here,
       cp(G) ≤ cp*(G) + o(n²) uniformly over graphs on n vertices, is proved
@@ -168,20 +168,7 @@ sources:
       not independently verified, that does not solve the problem. It computes
       f(n, k) exactly for n ≤ 7 by exhaustive search and leaves the behavior
       at positive excess density open.
-  - title: "graphon"
-    authors: ["Cameron Freer"]
-    id: "https://github.com/cameronfreer/graphon"
-    relationship: "adapts"
-    note: >-
-      The import closure of Graphon.Compactness, 11 modules, is vendored under
-      vendor/Graphon from commit 9f7be59fa754d260a544b4cfd83d6a5b94f7552e and
-      ported to this toolchain. The port leaves the mathematical statements
-      unchanged: it removes the blueprint annotations, converts the files to
-      the module system, adapts proofs to renamed Mathlib lemmas, and makes
-      the definition energyRect and the lemma
-      exists_cutNormDiff_limit_of_summable public. The compactness of the
-      decorated limit models is proved from it.
-  - title: "Uniform asymptotics of clique partition numbers"
+  - title: "Uniform asymptotics of clique partition numbers (blueprint)"
     authors: ["Plasma AI"]
     id: "https://github.com/plasma-ai/erdos-1017/blob/main/blueprint/proof.md"
     type: "original-proof"
@@ -199,6 +186,19 @@ sources:
       The companion paper accompanying this repository, in paper/; not
       refereed. It proves the shorter parts and one exclusion in full and
       summarizes the rest, which Lean proves.
+
+related_formalizations:
+  - id: "https://github.com/cameronfreer/graphon/tree/9f7be59fa754d260a544b4cfd83d6a5b94f7552e"
+    relationship: "adapts"
+    note: >-
+      The import closure of Graphon.Compactness, 11 modules, is vendored under
+      vendor/Graphon from commit 9f7be59fa754d260a544b4cfd83d6a5b94f7552e and
+      ported to this toolchain. The port leaves the mathematical statements
+      unchanged: it removes the blueprint annotations, converts the files to
+      the module system, adapts proofs to renamed Mathlib lemmas, and makes
+      the definition energyRect and the lemma
+      exists_cutNormDiff_limit_of_summable public. The compactness of the
+      decorated limit models is proved from it.
 
 status:
   scope: >-
