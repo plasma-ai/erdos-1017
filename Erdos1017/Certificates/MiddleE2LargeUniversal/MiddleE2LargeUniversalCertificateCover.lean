@@ -1,16 +1,17 @@
 module
 
-public import Erdos1017.Certificates.MiddleE2LargeUniversal.MiddleE2LargeUniversalCertificateChecker
+public import Erdos1017.Certificates.MiddleE2LargeUniversal.MiddleE2LargeUniversalCertificateKernelChecker
 
 /-!
 # Composition of the large-atom cover from checked pieces
 
 Each generated leaf piece states `cover d B = true` for one explicit dyadic box
 and is proved by `coverC_sound` from bounded kernel evaluation of `coverC` on a
-literal copy of the shape of the box's subtree, which runs the leaf test only at
-the leaves of that subtree; each generated internal piece combines the two
-explicit children of a box by `cover_of_split`, whose child boxes are checked
-against `IBox.split` by definitional unfolding.
+literal copy of the shape of the box's subtree, which runs the kernel form
+`Kernel.leafOK` of the leaf test only at the leaves of that subtree; each
+generated internal piece combines the two explicit children of a box by
+`cover_of_split`, whose child boxes are checked against `IBox.split` by
+definitional unfolding.
 -/
 
 @[expose] public section
@@ -28,10 +29,10 @@ inductive Cert where
   | leaf
   | node (l r : Cert)
 
-/-- `cover` along the shape `c`: the leaf test runs only at the leaves of `c`, and every
-other box is split. The depth `n` is fuel, as in `cover`. -/
+/-- `cover` along the shape `c`: the kernel form of the leaf test runs only at the leaves
+of `c`, and every other box is split. The depth `n` is fuel, as in `cover`. -/
 def coverC : Cert → ℕ → IBox → Bool
-  | .leaf, _, B => leafOK B
+  | .leaf, _, B => Kernel.leafOK B
   | .node _ _, 0, _ => false
   | .node l r, n + 1, B => coverC l n B.split.1 && coverC r n B.split.2
 
@@ -39,7 +40,9 @@ def coverC : Cert → ℕ → IBox → Bool
 theorem coverC_sound {c : Cert} {n : ℕ} {B : IBox} (h : coverC c n B = true) :
     cover n B = true := by
   induction c generalizing n B with
-  | leaf => cases n <;> simp_all [coverC, cover]
+  | leaf =>
+    rw [coverC, Kernel.leafOK_eq] at h
+    cases n <;> simp [cover, h]
   | node l r ihl ihr =>
     cases n with
     | zero => simp [coverC] at h
