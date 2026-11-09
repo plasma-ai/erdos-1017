@@ -86,7 +86,7 @@ Every Lean file of the library, the vendored library included, uses the module s
 
 `formalization.yaml` records the mathematical sources, authorship, AI use, source fidelity, and review status for a registry submission.
 
-`scripts/` also holds the checks of the [Palomar template](https://github.com/PalomarRegistry/PalomarTemplate), unchanged: `check-lean-sources.py` checks the module headers and the 10,000-line limit, `validate-formalization.rb` checks `formalization.yaml`, and `verify-comparator.sh` runs the toolchain's `lake comparator` with its bundled NanoDa and con-ron kernels, as Palomar does (it needs Linux and `bwrap`).
+`scripts/` also holds the checks of the [Palomar template](https://github.com/PalomarRegistry/PalomarTemplate), unchanged: `check-lean-sources.py` checks the module headers and the 10,000-line limit, `validate-formalization.rb` checks `formalization.yaml`, and `verify-comparator.sh` runs the toolchain's `lake comparator` with its bundled NanoDa and con-ron kernels (it needs Linux and `bwrap`). Palomar registers only NanoDa with `lake comparator` and replays con-ron afterwards as a separate, advisory check.
 
 The Lean and Mathlib versions are fixed by `lean-toolchain`, `lakefile.toml`, and `lake-manifest.json`.
 
