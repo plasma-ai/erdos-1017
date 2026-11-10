@@ -358,7 +358,7 @@ standard library.
   becomes a `cover_of_split` theorem and each other subtree a `decide +kernel`
   leaf on the `Cert` literal of its shape, so the kernel visits at most 40
   boxes inside a leaf (a bound no proof uses); the theorems go in post-order
-  to `.lake/cover-shards/`. On the committed tree it takes about seven
+  to `.lake/cover-shards/`. On the committed tree it takes about six
   minutes and about 1.1 GB of memory and writes 10 shards.
   `python3 scripts/split_cover_certificate.py [--shards DIR]
   [output-directory]` (shards default to `.lake/cover-shards/`) checks that
