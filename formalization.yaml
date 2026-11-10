@@ -287,14 +287,10 @@ review:
     development, including the vendored graphon library, builds on Lean
     v4.35.0-rc4, and the compared theorem depends only on propext,
     Classical.choice, and Quot.sound. Comparator, from the toolchain's lake
-    comparator, accepts it at commit cba465c7c5ffca9a5c881e23c54ab4dbb43a5bab
-    against Challenge.lean with the Lean, NanoDa and con-ron kernels. It ran
-    in its bwrap sandbox on Linux, under Docker Desktop on an Apple silicon
-    Mac, with Docker's /proc masking relaxed (--unmask-proc) so that bwrap
-    could mount /proc. In its paranoid mode, on macOS without its bwrap
-    sandbox, it also accepts the same commit with lean4lean and con-leche.
-    Plasma AI has reviewed the proof internally. No independent review of the
-    formalization has been recorded.
+    comparator, accepts it against Challenge.lean in its paranoid mode, with
+    the Lean, NanoDa, con-ron, lean4lean and con-leche kernels. It ran on
+    macOS without its bwrap sandbox. Plasma AI has reviewed the proof
+    internally. No independent review of the formalization has been recorded.
 
 alignment:
   namespace: "Erdos1017"

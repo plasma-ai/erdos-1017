@@ -1037,8 +1037,8 @@ See `certificates.md`.
 
 - **Cover** (`Erdos1017.MiddleE2LargeUniversal.FixedPoint.cover_root`):
   cover 80 IBox.root = true, a depth-bounded dyadic bisection of a box in
-  (q, A, b, u) whose leaves pass a fixed-point interval test, each by
-  `decide +kernel`.
+  (q, A, b, u) whose leaves pass a fixed-point interval test; `decide +kernel`
+  checks the test on subtrees of at most 40 boxes.
 - **Soundness** (`Erdos1017.MiddleE2LargeUniversal.FixedPoint.priceTests_of_cover`):
   given the cover, every real point with 157/1000 ≤ q ≤ 1/5,
   1/3 ≤ A ≤ 369/1000, 0 ≤ b, u ≤ 1/3 satisfying the necessary inequalities of

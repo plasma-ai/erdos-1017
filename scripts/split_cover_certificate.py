@@ -4,7 +4,8 @@
 Input: the cover shards that `MiddleE2LargeUniversalCertificateCoverGen.lean`
 writes, by default to `.lake/cover-shards/` (another directory with
 `--shards`). Their declarations `t0, t1, …` form one binary tree in
-post-order: a leaf `cover d B = true` is closed by `decide +kernel`, and an
+post-order: a leaf `cover d B = true` closes a subtree of the cover by
+`decide +kernel` on its certificate tree, through `coverC_sound`, and an
 internal node combines its two halves with `cover_of_split`. The last
 declaration closes `IBox.root` at depth 80.
 
@@ -45,8 +46,9 @@ DEFAULT_SHARDS = Path('.lake/cover-shards')
 DEFAULT_OUTPUT = Path('.lake/cover-certificate')
 GENERATOR = 'scripts/MiddleE2LargeUniversalCertificateCoverGen.lean'
 DECLARATION = re.compile(
-    r'^theorem t(\d+) : cover \d+ \(IBox\.mk[ \d]+\) = true :=(?: by decide \+kernel\n'
-    r'|\n  cover_of_split t(\d+) t(\d+)\n)', re.M)
+    r'^theorem t(\d+) : cover \d+ \(IBox\.mk[ \d]+\) = true :=\n'
+    r'  (?:coverC_sound \(by decide \+kernel :[^=]*= true\)\n|cover_of_split t(\d+) t(\d+)\n)',
+    re.M)
 TOKEN = re.compile(r'`[^`]*`\S*|\S+')
 
 
@@ -142,8 +144,9 @@ def modules(directory):
         doc = docstring(
             f'Middle-E2 large-atom cover, piece {number:0{width}d}',
             f'The subtree of the fixed-point cover below `t{node}`: the declarations '
-            f'`t{nodes[0]}` to `t{node}`, with {leaves} leaf boxes closed by '
-            '`decide +kernel` and the other boxes by `cover_of_split`.')
+            f'`t{nodes[0]}` to `t{node}`, with {leaves} subtrees closed by '
+            '`decide +kernel` on their certificate trees and the other boxes by '
+            '`cover_of_split`.')
         out[f'MiddleE2LargeUniversalCertificatePiece{number:0{width}d}.lean'] = (
             'module\n\n'
             f'public import {PREFIX}MiddleE2LargeUniversalCertificateCover\n\n'

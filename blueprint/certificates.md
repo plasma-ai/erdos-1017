@@ -16,8 +16,8 @@ Lean name is given.
 
 ## 11.1 The certificate contract
 
-The 167 modules of §11 are: the large universal-head cover, 155 modules of
-`Erdos1017/Certificates/MiddleE2LargeUniversal/` (the seven listed in §11.2 and 148
+The 168 modules of §11 are: the large universal-head cover, 156 modules of
+`Erdos1017/Certificates/MiddleE2LargeUniversal/` (the eight listed in §11.2 and 148
 generated pieces; the folder's two other modules belong to §10.4); the corner
 certificates `Erdos1017/Certificates/EmptySatCorner/EmptySatCornerCertificates.lean` and
 `Erdos1017/Certificates/EmptySatCorner/EmptySatCornerHardCertificates.lean` (the other
@@ -29,10 +29,12 @@ three ways.
 - **A kernel-evaluated cover** (§11.2). A Boolean function `cover` on integer
   data; a soundness theorem, proved for all inputs by reasoning over the
   reals, that `cover … = true` implies the wanted real inequalities; and the
-  Boolean fact, proved by `decide +kernel`. That proof is accepted only if the
-  kernel itself reduces `cover …` to `true` by definitional unfolding, with
-  its built-in arithmetic on natural-number literals, to which the integer
-  operations unfold; neither the elaborator nor compiled code evaluates
+  Boolean fact, assembled from `decide +kernel` proofs of `coverC … = true`,
+  where `coverC` follows a literal certificate tree, and a theorem deriving
+  `cover` from `coverC`. Each such proof is accepted only if the kernel itself
+  reduces `coverC …` to `true` by definitional unfolding, with its built-in
+  arithmetic on natural-number literals, to which the integer operations
+  unfold; neither the elaborator nor compiled code evaluates
   anything. Each Boolean value is thus a theorem of the kernel. The soundness
   theorems never evaluate `cover` or a leaf test; the only numerals they check
   are the scale and the window endpoints.
@@ -64,6 +66,7 @@ saturated corner) for the corner certificates; and §2, §6, §7, §10.0 and
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificatePartition.lean`,
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificateContraction.lean`,
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificateSound.lean`,
+`Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificateKernelChecker.lean`,
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificateCover.lean`,
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificateRoot.lean`, and the 148 pieces
 `Erdos1017/Certificates/MiddleE2LargeUniversal/MiddleE2LargeUniversalCertificatePiece000.lean` to
@@ -114,7 +117,7 @@ S₀ = 1000·2³⁰ = 1,073,741,824,000 (Lean's `S`); an `FI` is an integer pair
 exact; a product takes ⌊min/S₀⌋ and ⌈max/S₀⌉ of the corner products; a
 reciprocal (⌊S₀²/hi⌋, ⌈S₀²/lo⌉) follows a positive lower endpoint. Rounding
 is outward, by integer division, with no rational normalization. The square
-root keeps a candidate l from an untrusted bit search only if l² ≤ lo·S₀
+root keeps a candidate l from an untrusted Newton iteration only if l² ≤ lo·S₀
 (else 0), and h only if hi·S₀ ≤ h² (else max(S₀, hi)). Each operation has an
 enclosure lemma, such as `Erdos1017.MiddleE2LargeUniversal.FixedPoint.mem_fsqrt`:
 values in the argument intervals (and a positive divisor lower endpoint) give
@@ -186,17 +189,44 @@ is valid if i_c < 2^(k_c) for each c.
     both children are covered at depth n and one of them, valid, contains P.
     The interface applies this at the root.
 
+**Certificate trees** (`Erdos1017.MiddleE2LargeUniversal.FixedPoint.Cert`,
+`Erdos1017.MiddleE2LargeUniversal.FixedPoint.coverC`,
+`Erdos1017.MiddleE2LargeUniversal.FixedPoint.coverC_sound`,
+`Erdos1017.MiddleE2LargeUniversal.FixedPoint.Kernel.leafOK`,
+`Erdos1017.MiddleE2LargeUniversal.FixedPoint.Kernel.leafOK_eq`). A `Cert` is
+the shape of a binary tree, and `coverC` follows a given shape c, with the
+depth n as fuel:
+
+    coverC .leaf n B = Kernel.leafOK B,   coverC (.node l r) 0 B = false,
+    coverC (.node l r) (n + 1) B = coverC l n B.split.1 && coverC r n B.split.2.
+
+So the leaf test runs only at the leaves of c, and every other box is split.
+`Kernel.leafOK` is the leaf test written for the kernel: integer addition,
+subtraction, multiplication, division and comparison match on the
+constructors `Int.ofNat` and `Int.negSucc` and apply the natural-number
+operations directly, so the kernel does not unfold the instances behind
+them, and every other definition is copied on these operations.
+`Kernel.leafOK_eq` proves Kernel.leafOK B = leafOK B for every B, one
+definition at a time, with no range assumptions. `coverC_sound` turns
+coverC c n B = true into cover n B = true by induction on c, with
+`Kernel.leafOK_eq` at the leaves and `cover_of_split` at the nodes.
+
 **The computation**
 (`Erdos1017.MiddleE2LargeUniversal.FixedPoint.cover_of_split`,
 `Erdos1017.MiddleE2LargeUniversal.FixedPoint.Cov.t0`,
 `Erdos1017.MiddleE2LargeUniversal.FixedPoint.cover_root`). A script matching
 `theorem tN : cover d (IBox.mk …) = true` over the pieces and the root module
 counts 23,763 theorems `Cov.t0` to `Cov.t23762` (23,616 in the pieces, 147 in
-the root), each with d + k_q + k_A + k_b + k_u = 80.
+the root), each with d + k_q + k_A + k_b + k_u = 80. The boxes that the
+evaluation of cover 80 IBox.root visits form the search tree, of 291,647
+boxes: 145,824 pass the leaf test and 145,823 are split.
 
 - 11,882 leaves, all in the pieces, are proved by `decide +kernel`, on boxes
   of dyadic depth 4 to 28, so with budgets d from 52 to 76 (8,058 from 57 to
-  62); inside a leaf the kernel continues the bisection (§11.5). `Cov.t0` is
+  62). The leaf for B at budget d is coverC_sound applied to a
+  `decide +kernel` proof of coverC c d B = true, where c is the literal shape
+  of the search tree below B, of at most 40 boxes (§11.5). The kernel thus
+  runs the leaf test only at the 145,824 boxes that pass it. `Cov.t0` is
   cover 72 (IBox.mk 0 2 0 2 0 2 0 2) = true.
 - The other 11,881 (11,734 in the pieces, 147 in the root) are
   `cover_of_split t_i t_j`; `cover_of_split` turns cover n B.split.1 = true
@@ -326,10 +356,10 @@ standard library.
   library, evaluates `leafOK` with `#eval` to build the search tree of
   `cover 80 IBox.root` (names as in §11.2). Each subtree of more than 40 boxes
   becomes a `cover_of_split` theorem and each other subtree a `decide +kernel`
-  leaf, so the kernel visits at most 40 boxes inside a leaf (a bound no proof
-  uses); the theorems go in post-order to `.lake/cover-shards/`. On the
-  committed tree it takes about seven minutes and about 1.1 GB of memory and
-  writes 10 shards.
+  leaf on the `Cert` literal of its shape, so the kernel visits at most 40
+  boxes inside a leaf (a bound no proof uses); the theorems go in post-order
+  to `.lake/cover-shards/`. On the committed tree it takes about six
+  minutes and about 1.1 GB of memory and writes 10 shards.
   `python3 scripts/split_cover_certificate.py [--shards DIR]
   [output-directory]` (shards default to `.lake/cover-shards/`) checks that
   the declarations form one tree in post-order, every `cover_of_split`

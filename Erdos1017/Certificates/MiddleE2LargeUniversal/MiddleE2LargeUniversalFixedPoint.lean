@@ -116,14 +116,17 @@ def frecip (a : FI) : FI := ⟨fl (S * S) a.hi, ce (S * S) a.lo⟩
 
 def fdiv (a b : FI) : FI := fmul a (frecip b)
 
-/-- Structural floor square-root search. Its output is never trusted. -/
+/-- Structural Newton iteration `x ↦ ⌊(x + ⌊n / x⌋) / 2⌋` for the floor square root of
+`n`, stopped when a step does not decrease `x`. Its output is never trusted. -/
 def isqrtAux : ℕ → ℕ → ℕ → ℕ
-  | 0, _, r => r
-  | k + 1, n, r =>
-    if (r + 2 ^ k) * (r + 2 ^ k) ≤ n then isqrtAux k n (r + 2 ^ k) else isqrtAux k n r
+  | 0, _, x => x
+  | k + 1, n, x =>
+    let y := Nat.div (Nat.add x (Nat.div n x)) 2
+    cond (Nat.ble x y) x (isqrtAux k n y)
 
-/-- Binary search for the integer square root of a natural number below `2^96`. -/
-def isqrt (n : ℕ) : ℕ := isqrtAux 48 n 0
+/-- Newton's method from `2^48` for the integer square root of a natural number below
+`2^96`. -/
+def isqrt (n : ℕ) : ℕ := isqrtAux 64 n (Nat.pow 2 48)
 
 /-- Square-root enclosure; both endpoints are re-verified by squaring. -/
 def fsqrt (a : FI) : FI :=
