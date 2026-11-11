@@ -15,6 +15,8 @@ Plasma AI found the proof and wrote its Lean formalization with AI agents: GPT-6
 
 A [companion paper](paper/clique_partitions.pdf) presents the result and outlines the argument, proving the shorter parts and one case of the exclusions in full. The [LaTeX source](paper/clique_partitions.tex) is also available.
 
+This formalization has been [registered in Palomar](https://palomar-registry.org/entry?id=PALOMAR-2026-11-11-000003).
+
 **The benchmark.** Densities are normalized by `n²`, so `d = k/n²` lies in `[0, 1/2)`. Write `ε = 1/2 − d` for the limiting density of missing edges (for a graph on `n` vertices, the number of missing edges divided by `n²` is `ε − 1/(2n)`). Then
 
 ```
